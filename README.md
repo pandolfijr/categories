@@ -1,66 +1,158 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Projeto Laravel API de Categorias
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este projeto é uma API desenvolvida em Laravel 10 com PHP 8.2, utilizando Docker para o ambiente de desenvolvimento. 
 
-## About Laravel
+A API permite a criação, listagem, visualização e exclusão de categorias/sub-categorias, além de relacioná-las.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Começando
+### 📋 Pré-requisitos
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Para rodar o projeto na sua máquina, você precisará ter as seguintes ferramentas instaladas:
+```
+- Docker
+- Docker Compose
+- Composer
+```
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 🔧 Instalação do Projeto
 
-## Learning Laravel
+Clone o repositório do projeto
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```
+git clone https://github.com/pandolfijr/categories.git
+cd categories
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Instale o composer
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```
+composer install
 
-## Laravel Sponsors
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Construa e inicie os contêineres Docker
 
-### Premium Partners
+```
+docker-compose up -d --build
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```
 
-## Contributing
+Acesse o shell do contêiner em execução do Docker para rodar as migrations, responsáveis por gerar as tabelas do sistema
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+docker exec -it lojacorr_app /bin/bash
 
-## Code of Conduct
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Dentro do contêiner, rode o comando para criar as tabelas:
+```
+php artisan migrate
 
-## Security Vulnerabilities
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Após o término do comando, você já pode sair do Shell
+```
+exit
 
-## License
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Para obter as rotas que foram criadas, utilize o comando:
+
+```
+php artisan route:list
+```
+```
+GET|HEAD        api/category ..........................................................................................category.index › CategoryController@index
+POST            api/category ..........................................................................................category.store › CategoryController@store
+GET|HEAD        api/category/{category} ...............................................................................category.show › CategoryController@show
+PUT|PATCH       api/category/{category} ...............................................................................category.update › CategoryController@update
+DELETE          api/category/{category} .............................................................................. category.destroy › CategoryController@destroy
+GET|HEAD        api/sub-category ......................................................................................sub-category.index › SubCategoryController@index
+POST            api/sub-category ......................................................................................sub-category.store › SubCategoryController@store
+GET|HEAD        api/sub-category/create ...............................................................................sub-category.show › SubCategoryController@show
+PUT|PATCH       api/sub-category/{sub_category} .......................................................................sub-category.update › SubCategoryController@update
+DELETE          api/sub-category/{sub_category} .......................................................................sub-category.destroy › SubCategoryController@destroy
+```
+## ⚙️ Executando os testes
+
+Utilizando Insomnia, Postman ou outra ferramenta de teste de API utilize as rotas mencionadas acima para fazer requisições e obter os registros das tabelas.
+Para facilitar, foi adicionado na raiz do projeto o arquivo chamado RoutesInsomnia.json, que se trata das rotas exportadas. Com ele, basta acessar o Insomnia e importá-lo, e os testes estarão prontos, bastando apenas executá-los.
+
+### 🔩 Exemplos
+
+As rotas index, não possuem body. Ou seja, basta apenas executar com a URL
+
+```
+GET - http://localhost:8002/api/category
+GET - http://localhost:8002/api/sub-category
+
+```
+
+
+As rotas para show e delete, também não possuem body, porém você deve especificar o ID na URL
+
+```
+GET: http://localhost:8002/api/category/1
+GET: http://localhost:8002/api/sub-category/1
+DELETE: http://localhost:8002/api/sub-category/1
+DELETE: http://localhost:8002/api/category/1
+
+```
+
+As rotas para store possuem body.
+```
+POST: http://localhost:8002/api/category
+BODY:
+{
+	"name" : "Category"
+}
+
+
+
+```
+
+```
+POST: http://localhost:8002/api/sub-category
+BODY:
+{
+	"name" : "Sub-Category",
+	"category_id" : "1"
+}
+
+```
+
+Assim como as rotas store, as update também possuem body.
+```
+PUT: http://localhost:8002/api/category/1
+BODY:
+{
+	"name" : "Category Updated"
+}
+
+
+
+```
+
+```
+POST: http://localhost:8002/api/sub-category/1
+BODY:
+{
+	"name" : "Sub-Category Updated",
+	"category_id" : "1"
+}
+
+```
+
+
+## 🛠️ Construído com
+
+* [Laravel](https://laravel.com/docs/10.x/releases) - Laravel
+
+
+## 📌 Versão
+
+1.0
+
+## ✒️ Autor
+
+* **Desenvolvedor** - [Jean Pandolfi](https://github.com/pandolfijr/)
